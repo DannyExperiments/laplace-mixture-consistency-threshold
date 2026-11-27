@@ -1,0 +1,89 @@
+\documentclass[11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage[margin=.88in]{geometry}
+\usepackage{amssymb}
+\DeclareFontShape{OMX}{cmex}{m}{n}{<->cmex10}{}
+\DeclareMathSizes{8}{8}{8}{8}
+\DeclareMathSizes{9}{9}{8}{8}
+\DeclareMathSizes{10.95}{10.95}{8}{8}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={The cube-root consistency threshold for Laplace mixture estimation}}
+\newtheorem{theorem}{Theorem}
+\title{The cube-root consistency threshold for Laplace mixture estimation}
+\date{27 November 2026}
+\begin{document}
+\begin{abstract}
+For mixing laws supported on a fixed known interval, the ordinary exact Laplace nonparametric maximum-likelihood estimator is uniformly consistent in \(W_1\) exactly when the known positive nondecreasing noise-scale sequence is \(o(n^{1/3})\). Conditioning on the portion of the sample that falls in the interval gives a shape separation and an empirical likelihood bound. A pair of distinct laws with matching means proves impossibility at the threshold for any estimator.
+\end{abstract}
+\maketitle
+
+\section{Model and result}
+Xiong, Ju and Rao~\cite[\S7]{XJR} ask for the sharp consistency boundary in their growing Laplace noise experiment. Fix \(a>0\) and a known interval \(I=[-a,a]\), and let \(b_n>0\) be nondecreasing. At sample size \(n\), observe \(n\) independent draws with density
+\[
+ p_H(t,x)=\frac{t}{2}u_H(t,x),\qquad
+ u_H(t,x)=\int_I e^{-t|x-\theta|}\,dH(\theta),\qquad t=b_n^{-1},
+\]
+where \(H\) is a probability measure on \(I\). The nonparametric maximum-likelihood estimator (NPMLE) maximizes the full sample log likelihood over all such measures. The parameter set is compact in \(W_1\); evaluating \(p_H(t,x)\) at fixed \(x,t>0\) gives a positive continuous function of \(H\). Hence a maximizer exists for every sample.
+
+\begin{theorem}
+If \(n/b_n^3\to\infty\), every exact maximizing choice is uniformly \(W_1\)-consistent in probability over the mixing laws on \(I\). If \(n/b_n^3\) fails to tend to infinity, no estimator is \(W_1\)-consistent at both of the two fixed laws \(\delta_0\) and \((\delta_{-a}+\delta_a)/2\).
+\end{theorem}
+
+\section{Uniform separation of the interior shapes}
+Write \(T=1/b_1\), so \(0<t\le T\). Define \(Z_H(t)=\int_I u_H(t,x)\,dx\) and \(q_H(t,x)=u_H(t,x)/Z_H(t)\) on \(I\). These are the normalizer and conditional density for observations in \(I\). For every \(\epsilon>0\) for which separated pairs exist, there is \(c_\epsilon>0\) such that
+\[
+ W_1(H,G)\ge\epsilon\quad\Longrightarrow\quad
+        \|q_H(t,\cdot)-q_G(t,\cdot)\|_1\ge c_\epsilon t .
+\]
+
+To prove this, let \(L=2a\), \(A_H(x)=\int|x-\theta|\,dH(\theta)\), and write an overbar for averaging over \(I\) with normalized Lebesgue measure. Expanding the numerator and the normalizer at zero gives a uniform remainder \(O(t^2)\) for \(q_H(t,x)-L^{-1}[1-t(A_H(x)-\overline A_H)]\) on \(I\), independent of \(H\). Both \(u_H\) and \(A_H\) depend continuously on \(H\) in the uniform norm, since their kernels are uniformly Lipschitz in \(\theta\). Thus \((q_H-q_G)/t\) has a continuous extension at zero with value \(-[(A_H-A_G)-\overline{A_H-A_G}]/L\). This value vanishes only if \(H=G\). Indeed the almost-everywhere derivative of \(A_H-A_G\) on the open interval is \(2(F_H-F_G)\) for the distribution functions \(F_H,F_G\). Equality there extends by right continuity, including at \(-a\), and both functions equal one at \(a\).
+
+For positive \(t\), suppose \(q_H=q_G\). Then \(u_H=k u_G\) on \(I\) for \(k=Z_H/Z_G>0\). In distributions on the open interval,
+\[
+                       (\partial_x^2-t^2)u_H=-2t H.
+\]
+This follows from the derivative jump of \(e^{-t|x-\theta|}\) at \(x=\theta\). Thus \(H-kG\) is supported on the endpoints, and its convolution on the open interval is a linear combination of \(e^{tx}\) and \(e^{-tx}\). The convolution vanishes there, so both endpoint masses in \(H-kG\) are zero. The total mass now gives \(k=1\). Compactness of the separated pairs times \([0,T]\) proves separation. Pinsker's inequality then gives \(D(q_G\|q_H)\ge c_\epsilon^2t^2/2\).
+
+\section{Comparing the full likelihood}
+Each observation lies in the left tail, interior or right tail, with probabilities \(\pi_H\) under \(H\). On a tail its conditional density is a shifted exponential of rate \(t\), independent of \(H\): the convolution there factors into the exponential of \(x\) and a constant depending on \(H\). The full log likelihood ratio of \(H\) to the true \(G\) is therefore the sum of the categorical ratio and the conditional interior ratio.
+
+Let \(\widehat\pi\) be the empirical category fractions. The categorical part is uniformly bounded above, for every \(H\), by
+\[
+ n D(\widehat\pi\|\pi_G)
+     \le n\sum_j\frac{(\widehat\pi_j-\pi_{G,j})^2}{\pi_{G,j}} .
+\]
+The first bound maximizes over all category probability vectors. The second follows from \(\log z\le z-1\). All three categories have positive probability, and the last expression has expectation two by the multinomial variance formulas. In particular it is bounded in probability uniformly over \(G\) and across sample sizes.
+
+Conditional on the category labels, the \(m\) interior observations are independent with density \(q_G\). For \(h_H=\log(q_H/q_G)\), the triangle inequality in the exponent shows that each \(\log u_H(t,\cdot)\) is \(t\)-Lipschitz and hence \(h_H\) is \(2t\)-Lipschitz. Its total variation on \(I\) is at most \(4at\). When \(m>0\), integration by parts bounds the centered interior sample mean of \(h_H\) by \(4at\) times the uniform CDF deviation of the interior empirical sample from its conditional law. The Dvoretzky--Kiefer--Wolfowitz inequality~\cite{M} bounds the CDF deviation by \(O_{\rm P}(m^{-1/2})\) uniformly in \(G\), conditionally on every category sequence. Combining this with the uniform KL separation shows that the supremum of the interior log likelihood ratios over \(W_1(H,G)\ge\epsilon\) is at most
+\[
+                  -m c_\epsilon^2t^2/2+O_{\rm P}(t\sqrt m).
+\]
+The bound is simultaneous over \(H\) because the CDF deviation is shared by every \(h_H\).
+
+The interior probability \((t/2)Z_G(t)\) lies between \(at e^{-2aT}\) and \(at\). If \(nt^3\to\infty\), then \(nt\to\infty\), and binomial concentration puts \(m\) between constant positive multiples of \(nt\) with probability tending to one uniformly. Consequently \(mt^2\to\infty\) in probability and the negative term dominates both the conditional fluctuation and the categorical gain. With probability tending to one uniformly in \(G\), the full likelihood is strictly smaller than at \(G\) for every \(W_1\)-separated \(H\). This proves the uniform assertion for the ordinary estimator and every exact maximizer.
+
+\section{Two fixed laws at the boundary}
+Take \(G_0=\delta_0\) and \(G_1=(\delta_{-a}+\delta_a)/2\). Their \(W_1\) distance is \(a\). Let \(r=p_{G_1}/p_{G_0}\). Outside \(I\) this is \(\cosh(at)\), so \(r-1=O(t^2)\) as \(t\to0\). Inside \(I\), each shift of the center by distance \(a\) changes the density ratio to a number in \([e^{-at},e^{at}]\), hence \(|r-1|=O(t)\). Under \(G_0\) the interior mass is \(1-e^{-at}\le at\), giving a one-draw bound \(\chi^2(P_1\|P_0)=\mathbb E_0[(r-1)^2]=O(t^3)\).
+
+The one-draw Hellinger affinity \(\rho=\int\sqrt{p_{G_0}p_{G_1}}\) satisfies \(1-\rho\le\chi^2(P_1\|P_0)/2\), using \((\sqrt{r}-1)^2\le(r-1)^2\). The affinity of the product laws is \(\rho^n\). If \(nt^3\) fails to diverge then it is bounded on an infinite subsequence, on which \(t\to0\) and \(\rho^n\) stays bounded away from zero. Cauchy--Schwarz gives an upper bound \(\sqrt{1-\rho^{2n}}\) for the products' total variation distance. It stays below one on that subsequence. Consistency at both laws would yield a test with vanishing errors by selecting the closer of the two mixing laws to the estimate, which contradicts this bound.
+
+\section{Worked ratio and prior bounds}
+For \(a=1\), inside the interval the ratio for the testing pair is \(e^{-t(1-|x|)}\cosh(tx)\). Thus \((r-1)/t\) converges uniformly there to \(|x|-1\). The baseline density on this interval is \(t e^{-t|x|}/2\). Integrating the squared relative change and dividing by \(t^3\) therefore gives the limit
+\[
+           \frac12\int_{-1}^1(1-|x|)^2\,dx=\frac13.
+\]
+The two tails give \(O(t^4)\), so this matched-means pair has \(\chi^2(P_1\|P_0)\sim t^3/3\) in the normalized example.
+
+The original sufficient condition was \(b_n=o(n^{3/16}/\sqrt{\log n})\), and its impossibility result inspected two endpoint atoms on the \(\sqrt n\) scale~\cite[Corollary~5.3 and Theorem~5.4]{XJR}. The matching means above remove the first-order tail signal, leaving the rare interior observations decisive at order \(t^3\). Fixed-scale Laplace likelihood estimates~\cite{S} and deconvolution inversion inequalities~\cite{RS} concern different scalings or estimation steps. The theorem here gives the consistency boundary for fixed known support, with the positive nondecreasing scale sequence known. Convergence rates within that regime and support cardinality of the maximizer remain outside the result.
+
+\section*{Research disclosure}
+Under human direction, ChatGPT Astra 6.2 (OpenAI) generated the discovery proof. OpenAI Codex reviewed the mathematics and revised the manuscript. GPT-6.2 Sol checked primary literature and prepared the worked example, executable checks, visual and release files. DannyExperiments maintains the repository and is the preferred citation identity. No AI system is proposed as an author.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{XJR} Y. Xiong, N. P. Ju and V. Rao, Statistical Properties of Nonparametric MLE under Laplace Noise, 2026. \href{https://arxiv.org/abs/2608.25997v1}{arXiv:2608.25997v1}.
+\bibitem{S} C. Scricciolo, Bayes and maximum likelihood for \(L^1\)-Wasserstein deconvolution of Laplace mixtures, 2018. \href{https://arxiv.org/abs/1708.05445}{arXiv:1708.05445}.
+\bibitem{RS} J. Rousseau and C. Scricciolo, Wasserstein convergence in Bayesian and frequentist deconvolution models. \href{https://arxiv.org/abs/2309.15300}{Author preprint}.
+\bibitem{M} P. Massart, The tight constant in the Dvoretzky--Kiefer--Wolfowitz inequality, Ann. Probab. 18 (1990), 1269--1283. \href{https://doi.org/10.1214/aop/1176990746}{doi:10.1214/aop/1176990746}.
+\end{thebibliography}
+\end{document}

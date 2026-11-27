@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laplace shape explorer</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101c30;color:#f5f8fd;font:16px/1.5 system-ui}main{max-width:760px;margin:auto;padding:18px}h1{margin:0;font-size:clamp(1.55rem,5vw,2.2rem)}p{color:#cfdef2;margin:7px 0 14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px}label,.control{display:grid;gap:6px;padding:10px;background:#1b2e4b;border-radius:8px}input,select{min-width:0;width:100%;min-height:38px;accent-color:#78dcd1}select{background:#101c30;color:#f5f8fd;border:1px solid #90a5c2;border-radius:5px;font:inherit}canvas{display:block;width:100%;height:270px;margin:12px 0;background:#1b2e4b;border-radius:10px}.rows{display:grid;grid-template-columns:1fr auto;gap:5px 16px;margin:12px 0;padding:12px;border-radius:8px;background:#1b2e4b}.rows dt,.rows dd{margin:0}.pass{color:#78dcd1}.fail{color:#ffac97}.verdict{font-size:1.14rem;font-weight:700}
+</style>
+<main>
+<h1>Laplace shape explorer</h1>
+<p>Compare the report density from a point at zero with an equal mixture at −1 and 1.</p>
+<div class="grid">
+<label>Inverse noise scale t<select id="scale"><option value="0">1/8</option><option value="1">1/4</option><option value="2" selected>1/2</option><option value="3">1</option></select></label>
+<label>Rotate view<input id="angle" type="range" min="0" max="360" value="25"></label>
+</div>
+<canvas id="scene" aria-label="Rotating scaled-density profiles across the four inverse scales">The selected values appear below.</canvas>
+<p><span class="pass">Teal: interior</span> · Blue: tails. The brighter profile shows the selected scale.</p>
+<dl class="rows" aria-live="polite">
+<dt>Interior mass under the point law</dt><dd id="mass"></dd>
+<dt>Density ratio at x = 0</dt><dd id="center"></dd>
+<dt>Density ratio in both tails</dt><dd id="tail"></dd>
+</dl>
+<p>The vertical contrast is (p₁/p₀ − 1) / t. The interior contrast remains visible on this scale as t falls. The raw tail contrast shrinks quadratically.</p>
+</main>
+<script>
+"use strict";
+const el=id=>document.getElementById(id);
+const canvas=el("scene"),ctx=canvas.getContext("2d"),scales=[1/8,1/4,1/2,1];
+function ratio(x,t){return Math.abs(x)>=1?Math.cosh(t):Math.exp(-t*(1-Math.abs(x)))*Math.cosh(t*x);}
+function draw(){
+  const selected=Number(el("scale").value),t=scales[selected];
+  el("mass").textContent=(-Math.expm1(-t)).toFixed(4);
+  el("center").textContent=ratio(0,t).toFixed(4);
+  el("tail").textContent=ratio(2,t).toFixed(4);
+  const width=canvas.clientWidth,height=canvas.clientHeight,pixel=window.devicePixelRatio||1;
+  canvas.width=width*pixel; canvas.height=height*pixel;ctx.scale(pixel,pixel);
+  const angle=Number(el("angle").value)*Math.PI/180,tilt=.41+.13*Math.cos(angle);
+  function project(x,y,z){
+    [x,z]=[x*Math.cos(angle)+z*Math.sin(angle),z*Math.cos(angle)-x*Math.sin(angle)];
+    [y,z]=[y*Math.cos(tilt)-z*Math.sin(tilt),y*Math.sin(tilt)+z*Math.cos(tilt)];
+    const f=Math.min(455,width*1.1)/(5.3-z);
+    return [width/2+f*x,height/2-f*y,z];
+  }
+  const pieces=[];
+  scales.forEach((t,i)=>{
+    const z=.6*(i-1.5),heavy=i===selected;
+    for(let j=-24;j<24;j++){
+      const a=j/12,b=(j+1)/12,x=project(.78*a,(ratio(a,t)-1)/t,z,angle);
+      const y=project(.78*b,(ratio(b,t)-1)/t,z,angle);
+      const interior=j>=-12&&j<12;
+      pieces.push({x,y,depth:(x[2]+y[2])/2,color:interior?(heavy?"#78dcd1":"#5e9e9c"):(heavy?"#a9bbe0":"#607293"),heavy});
+    }
+  });
+  pieces.sort((a,b)=>a.depth-b.depth);
+  for(const {x,y,color,heavy} of pieces){
+    ctx.beginPath();ctx.moveTo(x[0],x[1]);ctx.lineTo(y[0],y[1]);ctx.lineWidth=heavy?3.6:1.8;ctx.strokeStyle=color;ctx.stroke();
+  }
+}
+for(const id of ["scale","angle"])el(id).addEventListener("input",draw);
+window.addEventListener("resize",draw);
+draw();
+</script></html>

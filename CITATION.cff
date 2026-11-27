@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "Cite this version of the research release."
+title: "The cube-root consistency threshold for Laplace mixture estimation"
+authors:
+  - name: "DannyExperiments"
+type: software
+version: "1.0.0"
+date-released: 2026-11-27
+repository-code: "https://github.com/DannyExperiments/laplace-mixture-consistency-threshold"
+keywords:
+  - "Laplace deconvolution"
+  - "nonparametric maximum likelihood"
+  - "Wasserstein consistency"
+  - "growing noise"
+  - "local differential privacy"
+  - "mixture models"
+doi: "10.5281/zenodo.24572913"
+url: "https://doi.org/10.5281/zenodo.24572913"
+preferred-citation:
+  type: software
+  title: "The cube-root consistency threshold for Laplace mixture estimation"
+  authors:
+    - name: "DannyExperiments"
+  version: "1.0.0"
+  date-released: 2026-11-27
+  doi: "10.5281/zenodo.24572913"
+  url: "https://doi.org/10.5281/zenodo.24572913"
+  repository-code: "https://github.com/DannyExperiments/laplace-mixture-consistency-threshold"
